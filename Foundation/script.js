@@ -1,4 +1,4 @@
-//// Exercise Fixin sync code with async => setTimeout WebApi
+//// Exercise Fixing sync code with async => setTimeout WebApi
 // const list = new Array(60000).join('1.1').split('.');
 
 // function removeItemsFromList() {
@@ -11,7 +11,7 @@
 
 // removeItemsFromList();
 ///////////////////////////////////////////////
-
+//// Call a function: ()
 function printName() {
   return 'Andrei Neagoie';
 }

@@ -79,7 +79,7 @@
 
 // callMeMaybe();
 
-// //// Memory efficient:
+// //// Closures - Memory efficient:
 // function heavy(item) {
 //   const bigArr = new Array(7000).fill(':)');
 //   console.log('created');
@@ -101,3 +101,69 @@
 //     return arr[index];
 //   };
 // }
+
+//// Closures - Encapsulation:
+// const makeNuclearButton = () => {
+//   let timeWithoutDestruction = 0;
+//   const passTime = () => timeWithoutDestruction++;
+//   const totalPeaceTime = () => timeWithoutDestruction;
+//   const launch = () => {
+//     timeWithoutDestruction = -1;
+//     return '💣';
+//   };
+//   setInterval(passTime, 1000);
+
+//   return {
+//     // launch: launch, // encapsulation - do not have access from the outside world
+//     totalPeaceTime: totalPeaceTime,
+//   };
+// };
+
+// const ohno = makeNuclearButton();
+// console.log(ohno.totalPeaceTime());
+
+// console.log(ohno.totalPeaceTime());
+
+//// Encapsulation - Closures Exercise:
+// let view;
+// function initialize() {
+//   let called = 0;
+//   return function () {
+//     if (called > 0) {
+//       return;
+//     } else {
+//       view = '🌄';
+//       called++;
+//       console.log('view has been sent');
+//     }
+//   };
+// }
+
+// const startOnce = initialize();
+// startOnce();
+// startOnce();
+// startOnce(); // no matter how many tiems we call it it tuns only once
+
+// // better solution:
+// let view;
+// function allAboutView() {
+//   const init = () => {
+//     view = '🌄';
+//     console.log('view is set');
+//   };
+//   return init;
+// }
+
+// const res = allAboutView();
+// res();
+// console.log(view);
+// console.log(allAboutView.init); // no access
+
+// Excercise 2:
+const arr = [1, 2, 3, 4];
+for (let i = 0; i < arr.length; i++) {
+  // console.log('I am at index ' + i);
+  setTimeout(function () {
+    console.log('I am at array index ' + arr[i]);
+  }, 3000);
+}

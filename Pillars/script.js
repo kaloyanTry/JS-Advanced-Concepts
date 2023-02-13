@@ -159,11 +159,75 @@
 // console.log(view);
 // console.log(allAboutView.init); // no access
 
-// Excercise 2:
-const arr = [1, 2, 3, 4];
-for (let i = 0; i < arr.length; i++) {
-  // console.log('I am at index ' + i);
-  setTimeout(function () {
-    console.log('I am at array index ' + arr[i]);
-  }, 3000);
-}
+// // Excercise 2:
+// const arr = [1, 2, 3, 4];
+// for (let i = 0; i < arr.length; i++) {
+//   // console.log('I am at index ' + i);
+//   setTimeout(function () {
+//     console.log('I am at array index ' + arr[i]);
+//   }, 3000);
+// }
+
+///////////////////////////////
+//// Ptototype Inheritance:
+// const dragon = {
+//   name: 'Tanya',
+//   fire: true,
+//   fight() {
+//     return 5;
+//   },
+//   sing() {
+//     if (this.fire) {
+//       return `I'm  ${this.name}, the breather of fire`;
+//     }
+//   },
+// };
+
+// console.log(dragon.fight());
+// console.log(dragon.sing());
+
+// const lizard = {
+//   name: 'Kiki',
+//   fire: true,
+//   fight() {
+//     return 1;
+//   },
+// };
+// //copy sing prop from dragon with bind()
+// const lizardSing = dragon.sing.bind(lizard);
+// console.log(lizardSing());
+
+// lizard.__proto__ = dragon; // inherit all props
+// console.log(lizard.sing());
+// console.log(lizard.fight());
+
+// for (let prop in lizard) {
+//   console.log(prop);
+// }
+
+// // Exercise: modify the .map():
+// const array = [1, 2, 3, 4];
+// Array.prototype.map = function () {
+//   const arr = [];
+//   for (let i = 0; i < this.length; i++) {
+//     arr.push(this[i] + '🗺️');
+//   }
+//   return arr;
+// };
+// console.log(array.map());
+
+//// exercise create methodd yesterday on Data object:
+Date.prototype.lastYear = function () {
+  return this.getUTCFullYear() - 1;
+};
+
+console.log(new Date('1978-10-10').lastYear());
+console.log(new Date().lastYear());
+
+// // this exercise:
+// Function.prototype.bind = function (whoIsCallingMe) {
+//   const self = this;
+//   return function () {
+//     return self.apply(whoIsCallingMe, arguments);
+//   };
+// };

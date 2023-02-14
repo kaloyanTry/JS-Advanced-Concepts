@@ -53,17 +53,49 @@
 // console.log(sam.attack());
 
 ///// OOP Class ES6:
-class Elf {
+// class Elf {
+//   constructor(name, weapon) {
+//     this.name = name;
+//     this.weapon = weapon;
+//   }
+//   attack() {
+//     return `${this.name} attacks with ${this.weapon}`;
+//   }
+// }
+
+// const peterElf = new Elf('Peter', 'stones');
+// console.log(peterElf.attack());
+// const samElf = new Elf('Sam', 'fire');
+// console.log(samElf.attack());
+
+class Character {
   constructor(name, weapon) {
     this.name = name;
     this.weapon = weapon;
   }
   attack() {
-    return `${this.name} attacks with ${this.weapon}`;
+    return `${this.name} attacks with ${this.weapon}.`;
   }
 }
 
-const peterElf = new Elf('Peter', 'stones');
-console.log(peterElf.attack());
-const samElf = new Elf('Sam', 'fire');
-console.log(samElf.attack());
+class Elf extends Character {
+  constructor(name, weapon, type) {
+    super(name, weapon);
+    this.type = type;
+  }
+}
+const dolby = new Elf('Dolby', 'cloth', 'house');
+console.log(dolby.attack());
+
+class Orge extends Character {
+  constructor(name, weapon, color) {
+    super(name, weapon);
+    this.color = color;
+  }
+  makeFort() {
+    return 'the strongest forth in the world is made';
+  }
+}
+const shrek = new Orge('Shrek', 'cloud', 'green');
+console.log(shrek.attack());
+console.log(shrek.makeFort());

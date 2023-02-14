@@ -68,34 +68,86 @@
 // const samElf = new Elf('Sam', 'fire');
 // console.log(samElf.attack());
 
+//// Inheritance BASICS
+// class Character {
+//   constructor(name, weapon) {
+//     this.name = name;
+//     this.weapon = weapon;
+//   }
+//   attack() {
+//     return `${this.name} attacks with ${this.weapon}.`;
+//   }
+// }
+
+// class Elf extends Character {
+//   constructor(name, weapon, type) {
+//     super(name, weapon);
+//     this.type = type;
+//   }
+// }
+// const dolby = new Elf('Dolby', 'cloth', 'house');
+// console.log(dolby.attack());
+
+// class Orge extends Character {
+//   constructor(name, weapon, color) {
+//     super(name, weapon);
+//     this.color = color;
+//   }
+//   makeFort() {
+//     return 'the strongest forth in the world is made';
+//   }
+// }
+// const shrek = new Orge('Shrek', 'cloud', 'green');
+// console.log(shrek.attack());
+// console.log(shrek.makeFort());
+
+//// Private and Public fields
+// class Employee {
+//   #name = 'Test'; // private field
+//   setName(name) {
+//     this.#name = name;
+//   }
+// }
+// const emp1 = new Employee();
+// //emp1.#name = 'New'; // error
+// emp1.setName('New'); // ok
+// console.log(emp1);
+
+// class Employee {
+//   #name = 'Test';
+//   constructor(name) {
+//     this.#setName(name); // ok
+//   }
+//   #setName(name) {
+//     // Private method
+//     this.#name = name;
+//   }
+// }
+// const emp = new Employee('New'); // ok
+// console.log(emp);
+// //console.log(emp.#setName('New Name'));
+// //emp.#setName('New'); // error
+
+// OOP exercise Polymorphism
 class Character {
   constructor(name, weapon) {
     this.name = name;
     this.weapon = weapon;
   }
   attack() {
-    return `${this.name} attacks with ${this.weapon}.`;
+    return 'attack with ' + this.weapon;
   }
 }
 
-class Elf extends Character {
-  constructor(name, weapon, type) {
+class Queen extends Character {
+  constructor(name, weapon, type = ['hearts', 'clubs', 'spades', 'diamonds']) {
     super(name, weapon);
     this.type = type;
   }
+  attack() {
+    return `I am the ${this.name} of ${this.type}, now bow down to me!`;
+  }
 }
-const dolby = new Elf('Dolby', 'cloth', 'house');
-console.log(dolby.attack());
 
-class Orge extends Character {
-  constructor(name, weapon, color) {
-    super(name, weapon);
-    this.color = color;
-  }
-  makeFort() {
-    return 'the strongest forth in the world is made';
-  }
-}
-const shrek = new Orge('Shrek', 'cloud', 'green');
-console.log(shrek.attack());
-console.log(shrek.makeFort());
+const victoria = new Queen('Victoria', 'army', 'hearts');
+console.log(victoria.attack());

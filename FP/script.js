@@ -53,23 +53,114 @@
 // console.log(obj, obj2);
 
 //// HOF
-const hofArrow = () => () => 5;
-console.log(hofArrow());
+// const hofArrow = () => () => 5;
+// console.log(hofArrow());
 
-const hof = (fn) => fn(5);
-hof(function a(x) {
-  return x;
-});
+// const hof = (fn) => fn(5);
+// hof(function a(x) {
+//   return x;
+// });
 
-// Closures
-const closure = function () {
-  let count = 55;
-  return function getCounter() {
-    //good way of uding closures: private and Not mutating data
-    return count;
-  };
+// // Closures
+// const closure = function () {
+//   let count = 55;
+//   return function getCounter() {
+//     //good way of uding closures: private and Not mutating data
+//     return count;
+//   };
+// };
+// const getCounter = closure();
+
+// console.log(getCounter());
+// console.log(getCounter());
+
+/// Curried => one perimeter at a time:
+// const multiply = (a, b) => a * b; //regular f() regular way
+
+// const curriedMultiply = (a) => (b) => a * b; //curried f()
+// console.log(curriedMultiply(3)(4));
+
+// const curriedMultyplyBy5 = curriedMultiply(5);
+// console.log(curriedMultyplyBy5(4));
+// console.log(curriedMultyplyBy5(7));
+
+//// Parital Application:
+// const multiply = (a, b, c) => a * b * c;
+// const partialMultiBy5 = multiply.bind(null, 5);
+// console.log(partialMultiBy5(4, 8));
+
+// //// Compose:
+// const compose = (f1, f2) => (data) => f1(f2(data)); //compose pure f()s
+// const multiplyBy3 = (num) => num * 3; // pure f()1
+// const makePosititve = (num) => Math.abs(num); // pure f()2
+
+// const multiplyBy3AndAbsolute = compose(multiplyBy3, makePosititve);
+// console.log(multiplyBy3AndAbsolute(-60));
+
+// //// Pipe => the same as compose, but in oposite order f()
+// const pipe = (f2, f1) => (data) => f2(f1(data));
+// const multiAbsPipe = pipe(multiplyBy3, makePosititve);
+// console.log(multiAbsPipe(-60));
+
+//// Amazon Shoping
+const user = {
+  name: 'Kim',
+  active: true,
+  cart: [],
+  purchases: [],
 };
-const getCounter = closure();
 
-console.log(getCounter());
-console.log(getCounter());
+const compose =
+  (f1, f2) =>
+  (...args) =>
+    f1(f2(...args));
+
+// purchaseItem(
+//   emptyCart,
+//   buyItem,
+//   applyTaxToItems,
+//   addItemToCart
+// )(user, { name: 'laptop', price: 400 });
+console.log(
+  purchaseItem(
+    purchaseItem(
+      emptyCart,
+      buyItem,
+      applyTaxToItems,
+      addItemToCart
+    )(user, { name: 'laptop', price: 400 })
+  )
+);
+
+function purchaseItem(...fns) {
+  return fns.reduce(compose);
+}
+
+function addItemToCart(user, item) {
+  const updatedCart = user.cart.concat(item);
+  return Object.assign({}, user, { cart: updatedCart });
+}
+
+function applyTaxToItems(user) {
+  const { cart } = user;
+  const taxRate = 1.3;
+  const updatedCart = cart.map((item) => {
+    return {
+      name: item.name,
+      price: item.price * taxRate,
+    };
+  });
+  return Object.assign({}, user, { cart: updatedCart });
+}
+function buyItem(user) {
+  return Object.assign({}, user, { purchases: user.cart });
+}
+function emptyCart(user) {
+  return Object.assign({}, user, { cart: [] });
+}
+
+// Implement a cart feature:
+// 1. Add items to cart.
+// 2. Add 3% tax to item in cart
+// 3. Buy item: cart --> purchases
+// 4. Empty cart

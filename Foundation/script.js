@@ -1,162 +1,178 @@
-//// Exercise Fixin sync code with async => setTimeout WebApi
-// const list = new Array(60000).join('1.1').split('.');
+'use strict';
+//// FP
 
-// function removeItemsFromList() {
-//   var item = list.pop();
+// Pure fuctions => functions modify every input inside === no/mimize side effects
+// same input returns same output, no matter how many times we call it
 
-//   if (item) {
-//     setTimeout(removeItemsFromList, 0);
-//   }
+// // No side effects
+// const array = [1, 2, 3, 4];
+
+// function removeLastItem(arr) {
+//   const removeArrray = [].concat(arr);
+//   removeArrray.pop();
+//   return removeArrray;
 // }
 
-// removeItemsFromList();
-///////////////////////////////////////////////
-//// How JS works simple:
-// function printName() {
-//   return 'Andrei Neagoie';
+// function multiplyBy2(arr) {
+//   return arr.map((item) => item * 2);
 // }
 
-// function findName() {
-//   return printName();
+// const outputRemoveArr = removeLastItem(array);
+// const outputMultiArr = multiplyBy2(array);
+// console.log(array, outputRemoveArr, outputMultiArr);
+
+// //////////////////////////////////////////
+// //// Referentional Transparancy => always the same result
+
+// function sum(num1, num2) {
+//   //// paramters are local variables
+//   return num1 + num2;
+// }
+// console.log(sum(3, 4));
+
+// function multiSum(num) {
+//   return num * 2;
+// }
+// console.log(multiSum(sum(3, 4)));
+// console.log(multiSum(7));
+
+//// Immutability:
+// const obj = { name: 'Andrei' };
+
+// function clone(obj) {
+//   return { ...obj };
 // }
 
-// function sayMyName() {
-//   return findName();
+// function updateName(obj) {
+//   const objCopy = clone(obj);
+//   objCopy.name = 'Nina';
+//   return objCopy;
 // }
 
-// console.log(sayMyName());
-////////////////////////////
-//// Hoisting exercise:
-// function bigBrother() {
-//   function littleBorther() {
-//     return 'IT IS ME!';
-//   }
-//   return littleBorther();
+// const obj2 = updateName(obj);
+// console.log(obj, obj2);
 
-//   function littleBorther() {
-//     return 'no me!';
-//   }
-// }
-// console.log(bigBrother());
-//////////////////////////////
+//// HOF
+// const hofArrow = () => () => 5;
+// console.log(hofArrow());
 
-//// Arguments:
-// function marry(person1, person2) {
-//   console.log('arguments', arguments);
+// const hof = (fn) => fn(5);
+// hof(function a(x) {
+//   return x;
+// });
 
-//   return `${person1} is merried to ${person2}.`;
-// }
+// // Closures
+// const closure = function () {
+//   let count = 55;
+//   return function getCounter() {
+//     //good way of uding closures: private and Not mutating data
+//     return count;
+//   };
+// };
+// const getCounter = closure();
 
-// console.log(marry('Sonia', 'Pan'));
-//////////////////////////////////////
+// console.log(getCounter());
+// console.log(getCounter());
 
-//// Scope Chain:
-// function sayMyName() {
-//   var a = 'a';
-//   return function findName() {
-//     var b = 'b';
-//     // console.log(c); NO access to var c
-//     return function printName() {
-//       var c = 'c';
-//       // console.log(a); // Yes access to var a
-//       return 'KAloyan';
-//     };
+/// Curried => one perimeter at a time:
+// const multiply = (a, b) => a * b; //regular f() regular way
+
+// const curriedMultiply = (a) => (b) => a * b; //curried f()
+// console.log(curriedMultiply(3)(4));
+
+// const curriedMultyplyBy5 = curriedMultiply(5);
+// console.log(curriedMultyplyBy5(4));
+// console.log(curriedMultyplyBy5(7));
+
+//// Parital Application:
+// const multiply = (a, b, c) => a * b * c;
+// const partialMultiBy5 = multiply.bind(null, 5);
+// console.log(partialMultiBy5(4, 8));
+
+// //// Memoizationi
+// function memoizationAddTo80() {
+//   let cache = {};
+//   return function (n) {
+//     if (n in cache) {
+//       return cache[n];
+//     } else {
+//       console.log('long time');
+//       cache[n] = n + 80;
+//       return cache[n];
+//     }
 //   };
 // }
-// console.log(sayMyName()); // print printName and findName functions and KAloyan
-// console.log(sayMyName()()); // print printName function and KAloyan
-// console.log(sayMyName()()()); // print KAloyan
 
-/////////////////////////////
-// function findName() {
-//   var b = 'b';
-//   return printName();
-// }
+// const memoized = memoizationAddTo80();
+// console.log('1', memoized(5));
+// console.log('2', memoized(5));
 
-// function printName() {
-//   var c = 'c';
-//   return 'Andrei Neagoie';
-// }
+// //// Compose:
+// const compose = (f1, f2) => (data) => f1(f2(data)); //compose pure f()s
+// const multiplyBy3 = (num) => num * 3; // pure f()1
+// const makePosititve = (num) => Math.abs(num); // pure f()2
 
-// function sayMyName() {
-//   var a = 'a';
-//   return findName();
-// }
+// const multiplyBy3AndAbsolute = compose(multiplyBy3, makePosititve);
+// console.log(multiplyBy3AndAbsolute(-60));
 
-// sayMyName();
+// //// Pipe => the same as compose, but in oposite order f()
+// const pipe = (f2, f1) => (data) => f2(f1(data));
+// const multiAbsPipe = pipe(multiplyBy3, makePosititve);
+// console.log(multiAbsPipe(-60));
 
-///////////////////////////////////////////
-// // 3 methods to manipulate this keyword: call() apply() bind()
-// const wizard = {
-//   name: 'Merilin',
-//   health: 50,
-//   heal(num1, num2) {
-//     return (this.health += num1 + num2);
-//   },
-// };
-// wizard.heal(30, 40);
-// console.log(wizard);
+// //// FP: Amazon Shoping
+// // Implement a cart feature:
+// // 1. Add items to cart.
+// // 2. Add 3% tax to item in cart
+// // 3. Buy item: cart --> purchases
+// // 4. Empty cart
 
-// const archer = {
-//   name: 'Robin Hood',
-//   health: 20,
-// };
-
-// console.log('1', archer);
-
-// //// call() method, uses parameters:
-// // console.log('-- call() method--');
-// // // call() is method that uses parameters from wizar.heal function
-// // wizard.heal.call(archer, 60, 100);
-// // console.log('2 call()', archer);
-
-// //// applay() method, uses array:
-// // console.log('--apply() method--');
-// // wizard.heal.apply(archer, [30, 70]);
-// // console.log('3 apply()', archer);
-
-// //// bind() method return a function that can be used later on:
-// const healArcher = wizard.heal.bind(archer, 60, 100);
-// healArcher();
-// console.log('4 bind()', archer);
-
-//////////////////////////////////////
-//// this apply() exercise:
-// const array = [1, 2, 3];
-
-// function getMaxNumber(arr) {
-//   // simple solution:
-//   // const maxNum = Math.max(...arr);
-//   // return maxNum;
-//   // this apply() to inherits method from JS Math Object
-//   return Math.max.apply(null, arr); // we can use this instead null
-// }
-
-// console.log(getMaxNumber(array));
-/////////////////////////////////////////////
-// // function currying:
-// function multiply(a, b) {
-//   return a * b;
-// }
-// console.log(multiply(4, 6));
-
-// // multiply only one of the parameters by a current number:
-// const multiplyByTwo = multiply.bind(this, 2);
-// console.log(multiplyByTwo(4));
-// const multiplyByTen = multiply.bind(this, 10);
-// console.log(multiplyByTen(4));
-///////////////////////////////////////
-
-//// this bind exercise:
-const character = {
-  name: 'Simon',
-  getCharacter() {
-    return this.name;
-  },
+const user = {
+  name: 'Kim',
+  active: true,
+  cart: [],
+  purchases: [],
 };
 
-const giveMeTheCharacterNOW = character.getCharacter;
-console.log('?', giveMeTheCharacterNOW());
+const compose =
+  (f1, f2) =>
+  (...args) =>
+    f1(f2(...args));
 
-const giveMeTheCharacterNOW2 = character.getCharacter.bind(character);
-console.log('?', giveMeTheCharacterNOW2());
+console.log(
+  purchaseItem(
+    purchaseItem(
+      emptyCart,
+      buyItem,
+      applyTaxToItems,
+      addItemToCart
+    )(user, { name: 'laptop', price: 400 })
+  )
+);
+
+function purchaseItem(...fns) {
+  return fns.reduce(compose);
+}
+
+function addItemToCart(user, item) {
+  const updatedCart = user.cart.concat(item);
+  return Object.assign({}, user, { cart: updatedCart });
+}
+
+function applyTaxToItems(user) {
+  const { cart } = user;
+  const taxRate = 1.3;
+  const updatedCart = cart.map((item) => {
+    return {
+      name: item.name,
+      price: item.price * taxRate,
+    };
+  });
+  return Object.assign({}, user, { cart: updatedCart });
+}
+function buyItem(user) {
+  return Object.assign({}, user, { purchases: user.cart });
+}
+function emptyCart(user) {
+  return Object.assign({}, user, { cart: [] });
+}

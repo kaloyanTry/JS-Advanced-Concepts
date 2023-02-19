@@ -168,9 +168,11 @@ function applyTaxToItems(user) {
   });
   return Object.assign({}, user, { cart: updatedCart });
 }
+
 function buyItem(user) {
   return Object.assign({}, user, { purchases: user.cart });
 }
+
 function emptyCart(user) {
   return Object.assign({}, user, { cart: [] });
 }

@@ -89,23 +89,23 @@
 // const partialMultiBy5 = multiply.bind(null, 5);
 // console.log(partialMultiBy5(4, 8));
 
-//// Memoizationi
-function memoizationAddTo80() {
-  let cache = {};
-  return function (n) {
-    if (n in cache) {
-      return cache[n];
-    } else {
-      console.log('long time');
-      cache[n] = n + 80;
-      return cache[n];
-    }
-  };
-}
+// //// Memoizationi
+// function memoizationAddTo80() {
+//   let cache = {};
+//   return function (n) {
+//     if (n in cache) {
+//       return cache[n];
+//     } else {
+//       console.log('long time');
+//       cache[n] = n + 80;
+//       return cache[n];
+//     }
+//   };
+// }
 
-const memoized = memoizationAddTo80();
-console.log('1', memoized(5));
-console.log('2', memoized(5));
+// const memoized = memoizationAddTo80();
+// console.log('1', memoized(5));
+// console.log('2', memoized(5));
 
 // //// Compose:
 // const compose = (f1, f2) => (data) => f1(f2(data)); //compose pure f()s
@@ -121,64 +121,56 @@ console.log('2', memoized(5));
 // console.log(multiAbsPipe(-60));
 
 // //// FP: Amazon Shoping
-// const user = {
-//   name: 'Kim',
-//   active: true,
-//   cart: [],
-//   purchases: [],
-// };
-
-// const compose =
-//   (f1, f2) =>
-//   (...args) =>
-//     f1(f2(...args));
-
-// // purchaseItem(
-// //   emptyCart,
-// //   buyItem,
-// //   applyTaxToItems,
-// //   addItemToCart
-// // )(user, { name: 'laptop', price: 400 });
-// console.log(
-//   purchaseItem(
-//     purchaseItem(
-//       emptyCart,
-//       buyItem,
-//       applyTaxToItems,
-//       addItemToCart
-//     )(user, { name: 'laptop', price: 400 })
-//   )
-// );
-
-// function purchaseItem(...fns) {
-//   return fns.reduce(compose);
-// }
-
-// function addItemToCart(user, item) {
-//   const updatedCart = user.cart.concat(item);
-//   return Object.assign({}, user, { cart: updatedCart });
-// }
-
-// function applyTaxToItems(user) {
-//   const { cart } = user;
-//   const taxRate = 1.3;
-//   const updatedCart = cart.map((item) => {
-//     return {
-//       name: item.name,
-//       price: item.price * taxRate,
-//     };
-//   });
-//   return Object.assign({}, user, { cart: updatedCart });
-// }
-// function buyItem(user) {
-//   return Object.assign({}, user, { purchases: user.cart });
-// }
-// function emptyCart(user) {
-//   return Object.assign({}, user, { cart: [] });
-// }
-
 // // Implement a cart feature:
 // // 1. Add items to cart.
 // // 2. Add 3% tax to item in cart
 // // 3. Buy item: cart --> purchases
 // // 4. Empty cart
+
+const user = {
+  name: 'Kim',
+  active: true,
+  cart: [],
+  purchases: [],
+};
+
+const compose =
+  (f1, f2) =>
+  (...args) =>
+    f1(f2(...args));
+
+console.log(
+  purchaseItem(
+    emptyCart,
+    buyItem,
+    applyTaxToItems,
+    addItemToCart
+  )(user, { name: 'laptop', price: 400 })
+);
+
+function purchaseItem(...fns) {
+  return fns.reduce(compose);
+}
+
+function addItemToCart(user, item) {
+  const updatedCart = user.cart.concat(item);
+  return Object.assign({}, user, { cart: updatedCart });
+}
+
+function applyTaxToItems(user) {
+  const { cart } = user;
+  const taxRate = 1.3;
+  const updatedCart = cart.map((item) => {
+    return {
+      name: item.name,
+      price: item.price * taxRate,
+    };
+  });
+  return Object.assign({}, user, { cart: updatedCart });
+}
+function buyItem(user) {
+  return Object.assign({}, user, { purchases: user.cart });
+}
+function emptyCart(user) {
+  return Object.assign({}, user, { cart: [] });
+}

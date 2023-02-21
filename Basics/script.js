@@ -1,4 +1,4 @@
-//// JS Types
+//// JS Types: Semples
 // 1. Number
 // 2. String
 // 3. Boolean

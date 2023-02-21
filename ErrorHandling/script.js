@@ -1,4 +1,5 @@
-//// Module JS + Error Han/dling
+//// Module JS + Error Handling
+// Errors:
 // Excercise 1
 // (function () {
 //   try {
